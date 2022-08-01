@@ -1,0 +1,34 @@
+definitions:
+  user:
+    type: object
+    properties:
+      _id:
+        type: ObjectId
+        description: database 고유 아이디
+      email:
+        type: string
+        description: 사용자 이메일
+      password:
+        type: string
+        description: 사용자 비밀번호
+      username:
+        type: string
+        description: 사용자 이름
+      type:
+        type: string
+        enum: [admin, member]
+        description: 사용자 타입
+      createdAt:
+        type: Date
+        description: 사용자 생성 날짜
+      updatedAt:
+        type: Date
+        description: 사용자 정보 수정 날짜
+    example:
+      _id: ObjectId('624e78abf5b065ffc9221a08')
+      email: example@example.com
+      password: encryptedPassword
+      username: 임근혁
+      type: member
+      createdAt: 2022-05-25T03:53:00.636+00:00
+      updatedAt: 2022-05-25T03:53:00.636+00:00

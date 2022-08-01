@@ -5,6 +5,9 @@ import express, { Request, Response } from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+
 import { port } from './config';
 
 export default class App {
@@ -13,6 +16,7 @@ export default class App {
   constructor() {
     this.app = express();
     this.initializeMiddleware();
+    this.initializeSwagger();
   }
 
   public listen(): void {
@@ -36,5 +40,23 @@ export default class App {
     this.app.get('/health-check', (req: Request, res: Response) => {
       res.send('ok');
     });
+  }
+
+  private initializeSwagger() {
+    const options = {
+      swaggerDefinition: {
+        info: {
+          title: 'Express Boilerplate',
+          version: '1.0.0',
+          description: 'This is the express api server documentation.',
+        },
+        host: 'localhost:3300',
+        basePath: '/api',
+      },
+      apis: ['./src/swagger/schema/*', './src/swagger/api/*', './src/swagger/tag/*'],
+    };
+
+    const specs = swaggerJSDoc(options);
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   }
 }
