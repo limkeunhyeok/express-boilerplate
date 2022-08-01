@@ -5,6 +5,7 @@ import express, { Request, Response } from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
+import { port } from './config';
 
 export default class App {
   private app: express.Application;
@@ -15,7 +16,6 @@ export default class App {
   }
 
   public listen(): void {
-    const port = 3000;
     this.app.listen(port, () => {
       console.log(`Server stating on port ${port}`);
     });
