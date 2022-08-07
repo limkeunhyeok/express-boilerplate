@@ -14,6 +14,9 @@ definitions:
       username:
         type: string
         description: 사용자 이름
+      nickname:
+        type: string
+        description: 사용자 이름
       type:
         type: string
         enum: [admin, member]
@@ -25,10 +28,13 @@ definitions:
         type: Date
         description: 사용자 정보 수정 날짜
     example:
-      _id: ObjectId('624e78abf5b065ffc9221a08')
-      email: example@example.com
-      password: encryptedPassword
-      username: 임근혁
-      type: member
-      createdAt: 2022-05-25T03:53:00.636+00:00
-      updatedAt: 2022-05-25T03:53:00.636+00:00
+      {
+        _id: ObjectId('624e78abf5b065ffc9221a08'),
+        email: example@example.com,
+        password: encryptedPassword,
+        username: 임근혁,
+        nickname: LKH,
+        type: member,
+        createdAt: 2022-05-25T03:53:00.636+00:00,
+        updatedAt: 2022-05-25T03:53:00.636+00:00,
+      }
