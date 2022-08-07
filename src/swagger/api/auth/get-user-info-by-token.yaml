@@ -1,0 +1,56 @@
+paths:
+  /auth:
+    get:
+      tags:
+        - Auth
+      summary: user authentication
+      description: |
+        Get user infomation except password as token.
+        Access token is required.
+        ...
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  _id:
+                    type: ObjectId
+                  email:
+                    type: string
+                  username:
+                    type: string
+                  nickname:
+                    type: string
+                  type:
+                    type: string
+                    enum: [admin, member]
+                    description: 사용자 타입
+                  createdAt:
+                    type: Date
+                    description: 사용자 생성 날짜
+                  updatedAt:
+                    type: Date
+                    description: 사용자 정보 수정 날짜
+            example:
+              {
+                code: 0,
+                message: 'success',
+                data:
+                  {
+                    _id: ObjectId('624e78abf5b065ffc9221a08'),
+                    email: example@example.com,
+                    username: 임근혁,
+                    nickname: LKH,
+                    type: member,
+                    createdAt: 2022-05-25T03:53:00.636+00:00,
+                    updatedAt: 2022-05-25T03:53:00.636+00:00,
+                  },
+              }

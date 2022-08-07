@@ -1,0 +1,63 @@
+paths:
+  /auth/sign-up:
+    post:
+      tags:
+        - Auth
+      summary: user sign up
+      description: |
+        User registration.
+        Email and password, username, nickname are required.
+        The password must be at least 8 characters long.
+        ...
+      parameters:
+        - in: body
+          name: signUp
+          schema:
+            type: object
+            required:
+              - email
+              - password
+              - username
+              - nickname
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+              username:
+                type: string
+              nickname:
+                type: string
+              type:
+                type: string
+                enum: [admin, member]
+            example:
+              {
+                email: example@email.com,
+                password: password,
+                username: 임근혁,
+                nickname: LKH,
+              }
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+            example:
+              {
+                code: 0,
+                message: 'success',
+                data: { accessToken: 'accessToken', refreshToken: 'refreshToken' },
+              }
