@@ -1,0 +1,55 @@
+paths:
+  /users/{userId}:
+    put:
+      tags:
+        - User
+      summary: update info by user id
+      description: |
+        Update user infomation.
+        Access token is required.
+        Members can only edit their own infomation.
+        ...
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: infomation
+          schema:
+            type: object
+            required:
+              - username
+              - nickname
+            properties:
+              username:
+                type: string
+              nickname:
+                type: string
+              type:
+                type: string
+                enum: [admin, member]
+            example: { username: 임근혁, nickname: LKH, type: admin }
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+              message:
+                type: string
+              data:
+                type: string
+            example:
+              {
+                _id: ObjectId('624e78abf5b065ffc9221a08'),
+                email: example@example.com,
+                username: 임근혁,
+                nickname: LKH,
+                type: admin,
+                createdAt: 2022-05-25T03:53:00.636+00:00,
+                updatedAt: 2022-05-25T03:53:00.636+00:00,
+              }

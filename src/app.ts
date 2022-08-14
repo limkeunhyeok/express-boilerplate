@@ -53,7 +53,11 @@ export default class App {
         host: 'localhost:3300',
         basePath: '/api',
       },
-      apis: ['./src/swagger/schema/*', './src/swagger/api/*', './src/swagger/tag/*'],
+      apis: [
+        './src/swagger/schema/*',
+        './src/swagger/api/**/*.yaml',
+        './src/swagger/tag/*',
+      ],
     };
 
     const specs = swaggerJSDoc(options);
