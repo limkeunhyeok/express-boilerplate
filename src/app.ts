@@ -20,8 +20,8 @@ export default class App {
 
   public listen(): void {
     this.app.listen(port, () => {
-      console.log(`Server stating on port ${port}`)
-      console.log('test3')
+      console.log(`Server stating on port ${port}`);
+      console.log('test4');
     });
   }
 
@@ -64,4 +64,3 @@ export default class App {
     this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   }
 }
-
