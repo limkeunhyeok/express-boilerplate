@@ -1,7 +1,8 @@
-import { Document, Model } from 'mongoose';
+import { Document, Model, ObjectId } from 'mongoose';
 import { RoleEnum } from '@/common/enums';
+import { MongoId } from '@/@types/datatype';
 
-export interface User {
+export interface UserRaw {
   email: string;
   password: string;
   username: string;
@@ -11,20 +12,19 @@ export interface User {
   updatedAt: Date;
 }
 
+export interface User extends UserRaw {
+  _id: MongoId
+}
+
 export type UserInfo = Omit<User, 'password'>;
 
-export interface UserDocument extends User, Document {
-  getUserInfo: (this: UserDocument) => UserInfo;
+export interface UserDocument extends UserRaw, Document {
+  getUserInfo: (this: UserDocument) => Promise<UserInfo>;
   comparePassword: (this: UserDocument, password: string) => Promise<Boolean>;
   updateUserPassword: (this: UserDocument, password: string) => Promise<Boolean>;
-  updateUserInfo: (this: UserDocument, userInfo: Partial<User>) => Promise<UserDocument>;
-  deleteUser: (this: UserDocument) => Promise<UserDocument>;
 }
 
 export interface UserModel extends Model<UserDocument> {
-  createUser: (this: UserModel, user: UserInfo) => Promise<UserInfo>;
+  createUser: (this: UserModel, user: Partial<User>) => Promise<UserDocument>;
   createAdmin: (this: UserModel) => Promise<void>;
-  findOneByUserId: (this: UserModel, userId: string) => Promise<UserDocument>;
-  findOneByEmail: (this: UserModel, email: string) => Promise<UserDocument>;
-  findAll: (this: UserModel) => Promise<UserDocument[]>;
 }
