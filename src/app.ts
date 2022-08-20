@@ -21,7 +21,6 @@ export default class App {
   public listen(): void {
     this.app.listen(port, () => {
       console.log(`Server stating on port ${port}`);
-      console.log('test4');
     });
   }
 
