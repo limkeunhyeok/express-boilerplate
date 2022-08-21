@@ -10,8 +10,8 @@ export function getUserInfo(this: UserDocument): UserInfo {
     nickname: this.nickname,
     type: this.type,
     createdAt: this.createdAt,
-    updatedAt: this.updatedAt
-  }
+    updatedAt: this.updatedAt,
+  };
   return userInfo;
 }
 
@@ -21,10 +21,13 @@ export function comparePassword(this: UserDocument, password: string): boolean {
   return isMatch;
 }
 
-export async function updateUserPassword(this: UserDocument, newPassword: string): Promise<UserDocument> {
+export async function updateUserPassword(
+  this: UserDocument,
+  newPassword: string
+): Promise<UserDocument> {
   this.password = bcrypt.hashSync(newPassword, saltRound);
-  
+
   await this.save();
-  
+
   return this;
 }

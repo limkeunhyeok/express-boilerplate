@@ -1,6 +1,6 @@
-import { Document, Model, ObjectId } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { RoleEnum } from '@/common/enums';
-import { MongoId } from '@/@types/datatype';
+import { ISODatetime, MongoId } from '@/@types/datatype';
 
 export interface UserRaw {
   email: string;
@@ -8,12 +8,12 @@ export interface UserRaw {
   username: string;
   nickname: string;
   type: RoleEnum;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: ISODatetime;
+  updatedAt: ISODatetime;
 }
 
 export interface User extends UserRaw {
-  _id: MongoId
+  _id: MongoId;
 }
 
 export type UserInfo = Omit<User, 'password'>;
