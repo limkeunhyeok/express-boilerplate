@@ -8,6 +8,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { port } from './config';
 import { logger } from './lib/logger';
+import { errorMiddleware } from './middlewares/error.middleware';
 import { loggingMiddleware } from './middlewares/logging.middleware';
 
 export default class App {
@@ -17,6 +18,7 @@ export default class App {
     this.app = express();
     this.initializeMiddleware();
     this.initializeSwagger();
+    this.initializeErrorHandling();
   }
 
   public listen(): void {
@@ -41,6 +43,10 @@ export default class App {
     this.app.get('/health-check', (req: Request, res: Response) => {
       res.send('ok');
     });
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware);
   }
 
   private initializeSwagger() {
