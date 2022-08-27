@@ -4,10 +4,11 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { port } from './config';
+import { logger } from './lib/logger';
+import { loggingMiddleware } from './middlewares/logging.middleware';
 
 export default class App {
   private app: express.Application;
@@ -20,7 +21,7 @@ export default class App {
 
   public listen(): void {
     this.app.listen(port, () => {
-      console.log(`Server stating on port ${port}`);
+      logger.info(`Server stating on port ${port}`);
     });
   }
 
@@ -36,6 +37,7 @@ export default class App {
     this.app.use(compression());
     this.app.use(cookieParser());
     this.app.use(cors({ origin: '*' }));
+    this.app.use(loggingMiddleware);
     this.app.get('/health-check', (req: Request, res: Response) => {
       res.send('ok');
     });
