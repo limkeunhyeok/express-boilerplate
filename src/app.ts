@@ -8,6 +8,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { port } from './config';
 import { logger } from './lib/logger';
+import { authMiddleware } from './middlewares/auth.middleware';
 import { errorMiddleware } from './middlewares/error.middleware';
 import { loggingMiddleware } from './middlewares/logging.middleware';
 
@@ -40,6 +41,7 @@ export default class App {
     this.app.use(cookieParser());
     this.app.use(cors({ origin: '*' }));
     this.app.use(loggingMiddleware);
+    this.app.use(authMiddleware);
     this.app.get('/health-check', (req: Request, res: Response) => {
       res.send('ok');
     });

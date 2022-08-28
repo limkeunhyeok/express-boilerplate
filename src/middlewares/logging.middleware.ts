@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, RequestHandler } from 'express';
 import morgan, { StreamOptions } from 'morgan';
 import { logger } from '@/lib/logger';
 import { nodeEnv } from '@/config';
@@ -14,9 +14,7 @@ const skip = () => {
   return env !== 'development';
 };
 
-const loggingMiddleware = morgan(
+export const loggingMiddleware: RequestHandler = morgan(
   ':method :url :body :status :res[content-length] - :response-time ms',
   { stream, skip }
 );
-
-export { loggingMiddleware };
