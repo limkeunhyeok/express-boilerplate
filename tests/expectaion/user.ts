@@ -1,4 +1,4 @@
-export function expectTokenResponseSucceed({ result }) {
+export function expectUserResponseSucceed({ result }) {
   expect(result).toHaveProperty('_id');
   expect(result).toHaveProperty('email');
   expect(result).toHaveProperty('password');
