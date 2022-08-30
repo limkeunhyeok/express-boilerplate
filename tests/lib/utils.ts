@@ -106,6 +106,22 @@ export async function fetchUserTokenAndHeaders(
   return headersWithToken;
 }
 
+export async function fetchAdminTokenAndHeaders(req: request.SuperTest<request.Test>) {
+  const headers = await fetchHeaders(req);
+  const withHeaders = withHeadersBy(headers);
+
+  const loginParams = { email: 'admin@example.com', password: 'password' };
+
+  const res = await withHeaders(req.post('/auth/sign-in').send(loginParams)).expect(200);
+
+  const resData = getResponseData(res);
+  const headersWithToken = getHeadersFrom(res, {
+    ...headers,
+    token: resData.accessToken,
+  });
+  return headersWithToken;
+}
+
 export const randomEnumKey = (enumeration) => {
   const keys = Object.keys(enumeration).filter(
     (k) => !(Math.abs(Number.parseInt(k)) + 1)

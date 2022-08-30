@@ -16,3 +16,21 @@ export function extractCreateUserParamsToUser(userRaw: UserRaw) {
     type: userRaw.type,
   };
 }
+
+export function extractUpdateUserParamsToUser(userRaw: UserRaw) {
+  return {
+    username: userRaw.username,
+    nickname: userRaw.nickname,
+    type: userRaw.type,
+  };
+}
+
+export function extractUpdateUserPasswordParamsToUser(
+  oldUserRaw: UserRaw,
+  newUserRaw: UserRaw
+) {
+  return {
+    oldPassword: oldUserRaw.password,
+    newPassword: newUserRaw.password,
+  };
+}
