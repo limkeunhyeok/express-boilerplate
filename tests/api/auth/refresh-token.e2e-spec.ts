@@ -8,7 +8,7 @@ import {
   isApiResponse,
   withHeadersBy,
 } from '../../lib/utils';
-import { mockUserRaw } from '../../mockup/user';
+import { createUser, mockUserRaw } from '../../mockup/user';
 import { extractLoginParamsToUser } from '../../lib/extractor';
 import { expectTokenResponseSucceed } from '../../expectaion/token';
 
@@ -16,8 +16,6 @@ describe('Auth API Test', () => {
   const app = getServer();
   const req = request(app);
   const rootApiPath = '/auth';
-
-  let withHeadersIncludeMemberToken: any;
 
   let headers: any;
   let withHeadersNotIncludeToken: any;
@@ -31,6 +29,7 @@ describe('Auth API Test', () => {
     it('success - user refresh token (200)', async () => {
       // given
       const userRaw = mockUserRaw();
+      await createUser(userRaw);
 
       const loginParams = extractLoginParamsToUser(userRaw);
       const loginResult = await withHeadersNotIncludeToken(
@@ -38,14 +37,14 @@ describe('Auth API Test', () => {
       ).expect(200);
 
       const tokens = getResponseData(loginResult);
-      withHeadersIncludeMemberToken = withHeadersBy({ token: tokens.accessToken });
+      const withHeadersIncludeOwnToken = withHeadersBy({ token: tokens.accessToken });
 
       const params = { refreshToken: tokens.refreshToken };
 
       // when
-      const res = await withHeadersIncludeMemberToken(
-        req.post(apiPath).send(params)
-      ).expect(200);
+      const res = await withHeadersIncludeOwnToken(req.post(apiPath).send(params)).expect(
+        200
+      );
 
       // then
       expect(isApiResponse(res.body)).toBe(true);
@@ -58,6 +57,7 @@ describe('Auth API Test', () => {
     it('failed - bad request (400) # required params', async () => {
       // given
       const userRaw = mockUserRaw();
+      await createUser(userRaw);
 
       const loginParams = extractLoginParamsToUser(userRaw);
       const loginResult = await withHeadersNotIncludeToken(
@@ -65,10 +65,10 @@ describe('Auth API Test', () => {
       ).expect(200);
 
       const tokens = getResponseData(loginResult);
-      withHeadersIncludeMemberToken = withHeadersBy({ token: tokens.accessToken });
+      const withHeadersIncludeOwnToken = withHeadersBy({ token: tokens.accessToken });
 
       // when
-      const res = await withHeadersIncludeMemberToken(req.post(apiPath)).expect(200);
+      const res = await withHeadersIncludeOwnToken(req.post(apiPath)).expect(200);
 
       // then
       expect(isApiResponse(res.body)).toBe(true);
