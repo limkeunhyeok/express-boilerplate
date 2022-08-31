@@ -35,7 +35,7 @@ export default class App {
   private initializeMiddleware() {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
-    this.app.use(hpp());
+    // this.app.use(hpp()); Block when sending an array as a query string
     this.app.use(helmet());
     this.app.use(compression());
     this.app.use(cookieParser());
