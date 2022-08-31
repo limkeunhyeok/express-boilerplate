@@ -1,5 +1,6 @@
-import { INVALID_TOKEN } from '@/common/constants/unauthorized.const';
-import { UnauthorizedException } from '@/common/exceptions';
+import { ACCESS_IS_DENIED, INVALID_TOKEN } from '@/common/constants';
+import { RoleEnum } from '@/common/enums';
+import { ForbiddenException, UnauthorizedException } from '@/common/exceptions';
 import { verifyToken } from '@/lib/jwt';
 import { RequestHandler } from 'express';
 
@@ -18,3 +19,14 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
     next();
   }
 };
+
+export const authorize =
+  (roles: RoleEnum[]) =>
+  (req, res, next): RequestHandler => {
+    const { type } = res.locals.user;
+
+    if (roles.includes(type)) {
+      return next(new ForbiddenException(ACCESS_IS_DENIED));
+    }
+    return next();
+  };
