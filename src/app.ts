@@ -1,11 +1,12 @@
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, { Request, Response } from 'express';
+import express, { Request, Response, Router } from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import { Controller } from './common/interfaces';
 import { port } from './config';
 import { logger } from './lib/logger';
 import { authMiddleware } from './middlewares/auth.middleware';
@@ -15,9 +16,10 @@ import { loggingMiddleware } from './middlewares/logging.middleware';
 export default class App {
   private app: express.Application;
 
-  constructor() {
+  constructor(controllers: Controller[]) {
     this.app = express();
     this.initializeMiddleware();
+    this.initializeControllers(controllers);
     this.initializeSwagger();
     this.initializeErrorHandling();
   }
@@ -71,5 +73,15 @@ export default class App {
 
     const specs = swaggerJSDoc(options);
     this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+  }
+
+  private initializeControllers(controllers: Controller[]) {
+    const router = Router();
+
+    controllers.forEach((controller) => {
+      router.use(controller.router);
+    });
+
+    this.app.use('/api', router);
   }
 }

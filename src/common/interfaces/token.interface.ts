@@ -5,7 +5,3 @@ export interface TokenPayload {
   userId: MongoId;
   type: RoleEnum;
 }
-
-export interface TokenResponse {
-  token: string;
-}

@@ -1,13 +1,8 @@
 import { RoleEnum } from '@/common/enums';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { SignInDto } from './sign-in.dto';
 
-export class SignUpDto {
-  @IsString()
-  email: string;
-
-  @IsString()
-  password: string;
-
+export class SignUpDto extends SignInDto {
   @IsString()
   username: string;
 
