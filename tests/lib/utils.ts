@@ -2,6 +2,7 @@ import request, { Response } from 'supertest';
 import App from '../../src/app';
 import { RoleEnum } from '../../src/common/enums';
 import { UserRaw } from '../../src/models/user';
+import AuthController from '../../src/api/auth/auth.controller';
 import { createUser, mockUserRaw } from '../mockup/user';
 import { extractLoginParamsToUser } from './extractor';
 
@@ -10,7 +11,7 @@ export interface Headers {
 }
 
 export function getServer() {
-  const app = new App();
+  const app = new App([new AuthController()]);
   return app.getServer();
 }
 
@@ -58,7 +59,7 @@ export function getHeadersFrom(res: Response, headers: Headers = {}): Headers {
 }
 
 export async function fetchHeaders(req: request.SuperTest<request.Test>) {
-  const res = await req.get('/healthcheck').expect(200);
+  const res = await req.get('/health-check').expect(200);
   return getHeadersFrom(res);
 }
 
@@ -67,7 +68,7 @@ export function setHeaders(
   headers: Headers,
   options: Partial<Record<keyof Headers, boolean>> = {}
 ) {
-  if (headers.token && !(typeof options.token !== 'undefined')) {
+  if (headers.token && !(typeof options.token !== 'undefined' && !options.token)) {
     req.auth(headers.token, { type: 'bearer' });
   }
   return req;
@@ -96,7 +97,9 @@ export async function fetchUserTokenAndHeaders(
 
   const loginParams = extractLoginParamsToUser(userRaw);
 
-  const res = await withHeaders(req.post('/auth/sign-in').send(loginParams)).expect(200);
+  const res = await withHeaders(req.post('/api/auth/sign-in').send(loginParams)).expect(
+    200
+  );
 
   const resData = getResponseData(res);
   const headersWithToken = getHeadersFrom(res, {
@@ -112,7 +115,9 @@ export async function fetchAdminTokenAndHeaders(req: request.SuperTest<request.T
 
   const loginParams = { email: 'admin@example.com', password: 'password' };
 
-  const res = await withHeaders(req.post('/auth/sign-in').send(loginParams)).expect(200);
+  const res = await withHeaders(req.post('/api/auth/sign-in').send(loginParams)).expect(
+    200
+  );
 
   const resData = getResponseData(res);
   const headersWithToken = getHeadersFrom(res, {

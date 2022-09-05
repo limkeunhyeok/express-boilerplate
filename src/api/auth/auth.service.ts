@@ -53,7 +53,7 @@ export class AuthService {
     type,
   }: SignUpDto): Promise<TokenResponse> {
     const hasUser = await this.userModel.findOne({ email });
-    if (!hasUser) {
+    if (hasUser) {
       throw new BadRequestException(EXISTS_USER);
     }
 

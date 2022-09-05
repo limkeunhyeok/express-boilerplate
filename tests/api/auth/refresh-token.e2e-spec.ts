@@ -15,16 +15,16 @@ import { expectTokenResponseSucceed } from '../../expectaion/token';
 describe('Auth API Test', () => {
   const app = getServer();
   const req = request(app);
-  const rootApiPath = '/auth';
+  const rootApiPath = '/api/auth';
 
   let headers: any;
   let withHeadersNotIncludeToken: any;
   beforeAll(async () => {
     headers = await fetchHeaders(req);
     withHeadersNotIncludeToken = withHeadersBy(headers);
-  });
+  }, 10000);
 
-  describe('POST /auth/token', () => {
+  describe('POST /api/auth/token', () => {
     const apiPath = `${rootApiPath}/token`;
     it('success - user refresh token (200)', async () => {
       // given
@@ -33,7 +33,7 @@ describe('Auth API Test', () => {
 
       const loginParams = extractLoginParamsToUser(userRaw);
       const loginResult = await withHeadersNotIncludeToken(
-        req.post('/auth/sign-in').send(loginParams)
+        req.post('/api/auth/sign-in').send(loginParams)
       ).expect(200);
 
       const tokens = getResponseData(loginResult);
@@ -52,7 +52,7 @@ describe('Auth API Test', () => {
 
       const result = getResponseData(res);
       expectTokenResponseSucceed({ result });
-    });
+    }, 10000);
 
     it('failed - bad request (400) # required params', async () => {
       // given
@@ -61,18 +61,19 @@ describe('Auth API Test', () => {
 
       const loginParams = extractLoginParamsToUser(userRaw);
       const loginResult = await withHeadersNotIncludeToken(
-        req.post('/auth/sign-in').send(loginParams)
+        req.post('/api/auth/sign-in').send(loginParams)
       ).expect(200);
 
       const tokens = getResponseData(loginResult);
+      console.log('%%%%', tokens);
       const withHeadersIncludeOwnToken = withHeadersBy({ token: tokens.accessToken });
 
       // when
-      const res = await withHeadersIncludeOwnToken(req.post(apiPath)).expect(200);
+      const res = await withHeadersIncludeOwnToken(req.post(apiPath)).expect(400);
 
       // then
       expect(isApiResponse(res.body)).toBe(true);
       expectResponseFailed(res);
-    });
+    }, 10000);
   });
 });

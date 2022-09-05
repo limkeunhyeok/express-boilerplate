@@ -15,16 +15,16 @@ import { expectTokenResponseSucceed } from '../../expectaion/token';
 describe('Auth API Test', () => {
   const app = getServer();
   const req = request(app);
-  const rootApiPath = '/auth';
+  const rootApiPath = '/api/auth';
 
   let headers: any;
   let withHeadersNotIncludeToken: any;
   beforeAll(async () => {
     headers = await fetchHeaders(req);
     withHeadersNotIncludeToken = withHeadersBy(headers);
-  });
+  }, 10000);
 
-  describe('POST /auth/sign-up', () => {
+  describe('POST /api/auth/sign-up', () => {
     const apiPath = `${rootApiPath}/sign-up`;
     it('success - create user (200)', async () => {
       // given
@@ -42,7 +42,7 @@ describe('Auth API Test', () => {
 
       const result = getResponseData(res);
       expectTokenResponseSucceed({ result });
-    });
+    }, 10000);
 
     it('failed - bad request (400) # required user params', async () => {
       // given
@@ -53,7 +53,7 @@ describe('Auth API Test', () => {
       // then
       expect(isApiResponse(res.body)).toBe(true);
       expectResponseFailed(res);
-    });
+    }, 10000);
 
     it('failed - bad request (400) # exist user', async () => {
       // given
@@ -68,6 +68,6 @@ describe('Auth API Test', () => {
       // then
       expect(isApiResponse(res.body)).toBe(true);
       expectResponseFailed(res);
-    });
+    }, 10000);
   });
 });

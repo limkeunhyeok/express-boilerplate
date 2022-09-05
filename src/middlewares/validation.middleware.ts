@@ -37,9 +37,9 @@ export const validationMiddleware = <T extends object>(
       forbidNonWhitelisted,
     }).then((errors: ValidationError[]) => {
       if (errors.length > 0) {
-        next(new BadRequestException(INVALID_DATA));
+        return next(new BadRequestException(INVALID_DATA));
       }
-      next();
+      return next();
     });
   };
 };

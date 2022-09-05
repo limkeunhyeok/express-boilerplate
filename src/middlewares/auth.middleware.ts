@@ -11,18 +11,22 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
       const token = bearerToken.replace(/^Bearer /, ' ');
       const decoded = verifyToken(token);
       res.locals.user = decoded;
-      next();
+      return next();
     } catch (err) {
-      next(new UnauthorizedException(INVALID_TOKEN));
+      return next(new UnauthorizedException(INVALID_TOKEN));
     }
   } else {
-    next();
+    return next();
   }
 };
 
 export const authorize =
   (roles: RoleEnum[]) =>
   (req, res, next): RequestHandler => {
+    if (!res.locals.user) {
+      return next(new UnauthorizedException(INVALID_TOKEN));
+    }
+
     const { type } = res.locals.user;
 
     if (roles.includes(type)) {

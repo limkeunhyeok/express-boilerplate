@@ -45,7 +45,7 @@ export default class AuthController implements Controller {
         validationMiddleware(SignInDto, ['body']),
         ResponseHandler(this.signIn)
       )
-      .get(
+      .post(
         '/sign-up',
         validationMiddleware(SignUpDto, ['body']),
         ResponseHandler(this.signUp)

@@ -14,7 +14,7 @@ import { expectUserResponseSucceed } from '../../expectaion/user';
 describe('Auth API Test', () => {
   const app = getServer();
   const req = request(app);
-  const rootApiPath = '/auth';
+  const rootApiPath = '/api/auth';
 
   let memberTokenHeaders: any;
   let withHeadersIncludeMemberToken: any;
@@ -27,9 +27,9 @@ describe('Auth API Test', () => {
 
     headers = await fetchHeaders(req);
     withHeadersNotIncludeToken = withHeadersBy(headers);
-  });
+  }, 10000);
 
-  describe('GET /auth', () => {
+  describe('GET /api/auth', () => {
     const apiPath = `${rootApiPath}`;
     it('success - user authentication (200)', async () => {
       // given
@@ -43,7 +43,7 @@ describe('Auth API Test', () => {
 
       const result = getResponseData(res);
       expectUserResponseSucceed({ result });
-    });
+    }, 10000);
 
     it('failed - unauthorized (401) # invalid token', async () => {
       // given
@@ -54,6 +54,6 @@ describe('Auth API Test', () => {
       // then
       expect(isApiResponse(res.body)).toBe(true);
       expectResponseFailed(res);
-    });
+    }, 10000);
   });
 });
