@@ -65,7 +65,6 @@ describe('Auth API Test', () => {
       ).expect(200);
 
       const tokens = getResponseData(loginResult);
-      console.log('%%%%', tokens);
       const withHeadersIncludeOwnToken = withHeadersBy({ token: tokens.accessToken });
 
       // when

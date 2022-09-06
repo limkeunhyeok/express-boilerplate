@@ -68,7 +68,7 @@ export function setHeaders(
   headers: Headers,
   options: Partial<Record<keyof Headers, boolean>> = {}
 ) {
-  if (headers.token && !(typeof options.token !== 'undefined' && !options.token)) {
+  if (headers.token && !(typeof options.token !== 'undefined')) {
     req.auth(headers.token, { type: 'bearer' });
   }
   return req;
@@ -106,6 +106,7 @@ export async function fetchUserTokenAndHeaders(
     ...headers,
     token: resData.accessToken,
   });
+
   return headersWithToken;
 }
 

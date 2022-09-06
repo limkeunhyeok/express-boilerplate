@@ -55,7 +55,7 @@ export default class AuthController implements Controller {
   }
 
   authentication: RequestHandler = async (req, res): Promise<UserResponse> => {
-    const { userId } = res.locals.userPayload;
+    const { userId } = res.locals.user;
     const user: User = await this.authService.authentication({ userId });
     return user.toJson();
   };

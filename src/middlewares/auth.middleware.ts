@@ -8,7 +8,7 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
   const bearerToken: string = req.headers.authorization;
   if (bearerToken) {
     try {
-      const token = bearerToken.replace(/^Bearer /, ' ');
+      const token = bearerToken.replace(/^Bearer /, '');
       const decoded = verifyToken(token);
       res.locals.user = decoded;
       return next();
@@ -29,7 +29,7 @@ export const authorize =
 
     const { type } = res.locals.user;
 
-    if (roles.includes(type)) {
+    if (!roles.includes(type)) {
       return next(new ForbiddenException(ACCESS_IS_DENIED));
     }
     return next();

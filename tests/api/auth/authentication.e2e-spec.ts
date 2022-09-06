@@ -21,7 +21,7 @@ describe('Auth API Test', () => {
 
   let headers: any;
   let withHeadersNotIncludeToken: any;
-  beforeAll(async () => {
+  beforeEach(async () => {
     memberTokenHeaders = await fetchUserTokenAndHeaders(req);
     withHeadersIncludeMemberToken = withHeadersBy(memberTokenHeaders);
 

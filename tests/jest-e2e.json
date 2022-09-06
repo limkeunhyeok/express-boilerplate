@@ -5,7 +5,7 @@
     "@/(.*)": "<rootDir>/src/$1"
   },
   "testEnvironment": "node",
-  "testRegex": "refresh-token.e2e-spec.ts",
+  "testRegex": "..tests/api/auth/",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },

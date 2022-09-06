@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { mockUserRaw } from '../../mockup/user';
+import { createUser, mockUserRaw } from '../../mockup/user';
 import {
   expectResponseFailed,
   expectResponseSucceed,
@@ -11,7 +11,6 @@ import {
 } from '../../lib/utils';
 import { extractLoginParamsToUser } from '../../lib/extractor';
 import { expectTokenResponseSucceed } from '../../expectaion/token';
-import { getRandomUser } from '../../lib/random-document';
 
 describe('Auth API Test', () => {
   const app = getServer();
@@ -29,8 +28,10 @@ describe('Auth API Test', () => {
     const apiPath = `${rootApiPath}/sign-in`;
     it('success - sign in (200)', async () => {
       // given
-      const randomUser = await getRandomUser();
-      const params = extractLoginParamsToUser(randomUser);
+      const userRaw = mockUserRaw();
+      await createUser(userRaw);
+
+      const params = extractLoginParamsToUser(userRaw);
 
       // when
       const res = await withHeadersNotIncludeToken(req.post(apiPath).send(params)).expect(
@@ -58,10 +59,11 @@ describe('Auth API Test', () => {
 
     it('failed - bad request (400) # email or password is incorrect', async () => {
       // given
-      const randomUser = await getRandomUser();
-      const params = extractLoginParamsToUser(randomUser);
+      const userRaw = mockUserRaw();
       const dummy = mockUserRaw();
+      await createUser(userRaw);
 
+      const params = extractLoginParamsToUser(userRaw);
       params.password = dummy.password;
 
       // when
@@ -76,10 +78,11 @@ describe('Auth API Test', () => {
 
     it('failed - bad request (400) # email or password is incorrect', async () => {
       // given
-      const randomUser = await getRandomUser();
-      const params = extractLoginParamsToUser(randomUser);
+      const userRaw = mockUserRaw();
       const dummy = mockUserRaw();
+      await createUser(userRaw);
 
+      const params = extractLoginParamsToUser(userRaw);
       params.email = dummy.email;
 
       // when
