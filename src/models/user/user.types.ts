@@ -21,7 +21,7 @@ export type UserInfo = Omit<User, 'password'>;
 export interface UserDocument extends UserRaw, Document {
   getUserInfo: (this: UserDocument) => Promise<UserInfo>;
   comparePassword: (this: UserDocument, password: string) => Promise<Boolean>;
-  updateUserPassword: (this: UserDocument, password: string) => Promise<Boolean>;
+  updateUserPassword: (this: UserDocument, password: string) => Promise<UserDocument>;
 }
 
 export interface UserModel extends Model<UserDocument> {

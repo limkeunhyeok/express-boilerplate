@@ -33,7 +33,7 @@ export class AuthService {
       throw new BadRequestException(FAILED_SIGN_IN);
     }
 
-    const isMatch = hasUser.comparePassword(password);
+    const isMatch = await hasUser.comparePassword(password);
     if (!isMatch) {
       throw new BadRequestException(FAILED_SIGN_IN);
     }

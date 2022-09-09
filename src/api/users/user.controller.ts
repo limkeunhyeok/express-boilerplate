@@ -60,13 +60,17 @@ export default class UserController implements Controller {
 
   deleteOneByUserId: RequestHandler = async (req, res): Promise<UserResponse> => {
     const { userId } = res.locals.user;
+
     const user: User = await this.userService.deleteOneByUserId({ userId });
+
     return user.toJson();
   };
 
   findOneByUserId: RequestHandler = async (req, res): Promise<UserResponse> => {
     const { userId } = res.locals.user;
+
     const user: User = await this.userService.findOneByUserId({ userId });
+
     return user.toJson();
   };
 
@@ -74,20 +78,25 @@ export default class UserController implements Controller {
     const params: UpdateUserInfoDto = getDataFromRequest(req);
     const { userId } = res.locals.user;
     params.userId = userId;
+
     const user: User = await this.userService.updateInfoByUserId(params);
+
     return user;
   };
 
-  findAll: RequestHandler = async (req): Promise<UserResponse[]> => {
+  findAll: RequestHandler = async (): Promise<UserResponse[]> => {
     const users: UserResponse[] = await this.userService.findAll();
+
     return users;
   };
 
-  updatePasswordByUserId: RequestHandler = (req) => {
+  updatePasswordByUserId: RequestHandler = async (req, res): Promise<string> => {
     const params: UpdateUserPasswordDto = getDataFromRequest(req);
     const { userId } = res.locals.user;
     params.userId = userId;
-    const user: User = await this.userService.updatePasswordByUserId(params);
-    return user.toJson();
+
+    const message = await this.userService.updatePasswordByUserId(params);
+
+    return message;
   };
 }

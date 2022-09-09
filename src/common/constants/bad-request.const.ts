@@ -12,3 +12,13 @@ export const EXISTS_USER = {
   code: 4002,
   message: 'Email is already registered.',
 };
+
+export const NONE_EXISTS_USER = {
+  code: 4003,
+  message: 'None exists user.',
+};
+
+export const INCORRECT_PASSWORD = {
+  code: 4004,
+  message: 'Password is incorrect.',
+};
