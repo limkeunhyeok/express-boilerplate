@@ -5,7 +5,7 @@ export class SignInDto {
   email: string;
 
   @IsString()
-  @MinLength(10)
+  @MinLength(8)
   @MaxLength(20)
   password: string;
 }

@@ -58,26 +58,24 @@ export default class UserController implements Controller {
     this.router.use(this.path, router);
   }
 
-  deleteOneByUserId: RequestHandler = async (req, res): Promise<UserResponse> => {
-    const { userId } = res.locals.user;
+  deleteOneByUserId: RequestHandler = async (req): Promise<UserResponse> => {
+    const params: UserIdDto = getDataFromRequest(req);
 
-    const user: User = await this.userService.deleteOneByUserId({ userId });
-
-    return user.toJson();
-  };
-
-  findOneByUserId: RequestHandler = async (req, res): Promise<UserResponse> => {
-    const { userId } = res.locals.user;
-
-    const user: User = await this.userService.findOneByUserId({ userId });
+    const user: User = await this.userService.deleteOneByUserId(params);
 
     return user.toJson();
   };
 
-  updateInfoByUserId: RequestHandler = async (req, res) => {
+  findOneByUserId: RequestHandler = async (req): Promise<UserResponse> => {
+    const params: UserIdDto = getDataFromRequest(req);
+
+    const user: User = await this.userService.findOneByUserId(params);
+
+    return user.toJson();
+  };
+
+  updateInfoByUserId: RequestHandler = async (req) => {
     const params: UpdateUserInfoDto = getDataFromRequest(req);
-    const { userId } = res.locals.user;
-    params.userId = userId;
 
     const user: User = await this.userService.updateInfoByUserId(params);
 
@@ -90,10 +88,8 @@ export default class UserController implements Controller {
     return users;
   };
 
-  updatePasswordByUserId: RequestHandler = async (req, res): Promise<string> => {
+  updatePasswordByUserId: RequestHandler = async (req): Promise<string> => {
     const params: UpdateUserPasswordDto = getDataFromRequest(req);
-    const { userId } = res.locals.user;
-    params.userId = userId;
 
     const message = await this.userService.updatePasswordByUserId(params);
 

@@ -3,6 +3,7 @@ import App from '../../src/app';
 import { RoleEnum } from '../../src/common/enums';
 import { UserRaw } from '../../src/models/user';
 import AuthController from '../../src/api/auth/auth.controller';
+import UserController from '../../src/api/users/user.controller';
 import { createUser, mockUserRaw } from '../mockup/user';
 import { extractLoginParamsToUser } from './extractor';
 
@@ -11,7 +12,7 @@ export interface Headers {
 }
 
 export function getServer() {
-  const app = new App([new AuthController()]);
+  const app = new App([new AuthController(), new UserController()]);
   return app.getServer();
 }
 

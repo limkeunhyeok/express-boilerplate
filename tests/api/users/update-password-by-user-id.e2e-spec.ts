@@ -18,14 +18,14 @@ import {
 describe('Users API Test', () => {
   const app = getServer();
   const req = request(app);
-  const rootApiPath = '/users';
+  const rootApiPath = '/api/users';
 
   let memberTokenHeaders: any;
   let withHeadersIncludeMemberToken: any;
 
   let headers: any;
   let withHeadersNotIncludeToken: any;
-  beforeAll(async () => {
+  beforeEach(async () => {
     memberTokenHeaders = await fetchUserTokenAndHeaders(req);
     withHeadersIncludeMemberToken = withHeadersBy(memberTokenHeaders);
 
@@ -43,7 +43,7 @@ describe('Users API Test', () => {
 
       const loginParams = extractLoginParamsToUser(userRaw);
       const loginResult = await withHeadersNotIncludeToken(
-        req.post('/auth/sign-in').send(loginParams)
+        req.post('/api/auth/sign-in').send(loginParams)
       ).expect(200);
 
       const tokens = getResponseData(loginResult);
@@ -70,7 +70,7 @@ describe('Users API Test', () => {
 
       const loginParams = extractLoginParamsToUser(userRaw);
       const loginResult = await withHeadersNotIncludeToken(
-        req.post('/auth/sign-in').send(loginParams)
+        req.post('/api/auth/sign-in').send(loginParams)
       ).expect(200);
 
       const tokens = getResponseData(loginResult);
@@ -94,7 +94,7 @@ describe('Users API Test', () => {
 
       const loginParams = extractLoginParamsToUser(userRaw);
       const loginResult = await withHeadersNotIncludeToken(
-        req.post('/auth/sign-in').send(loginParams)
+        req.post('/api/auth/sign-in').send(loginParams)
       ).expect(200);
 
       const tokens = getResponseData(loginResult);

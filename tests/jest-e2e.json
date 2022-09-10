@@ -5,7 +5,7 @@
     "@/(.*)": "<rootDir>/src/$1"
   },
   "testEnvironment": "node",
-  "testRegex": "..tests/api/auth/",
+  "testRegex": "..tests/api/users",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },

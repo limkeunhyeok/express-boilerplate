@@ -15,7 +15,7 @@ import { expectUserResponseSucceed } from '../../expectaion/user';
 describe('Users API Test', () => {
   const app = getServer();
   const req = request(app);
-  const rootApiPath = '/users';
+  const rootApiPath = '/api/users';
 
   let memberTokenHeaders: any;
   let withHeadersIncludeMemberToken: any;
@@ -25,7 +25,7 @@ describe('Users API Test', () => {
 
   let adminTokenHeaders: any;
   let withHeadersIncludeAdminToken: any;
-  beforeAll(async () => {
+  beforeEach(async () => {
     memberTokenHeaders = await fetchUserTokenAndHeaders(req);
     withHeadersIncludeMemberToken = withHeadersBy(memberTokenHeaders);
 

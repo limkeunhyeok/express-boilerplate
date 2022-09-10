@@ -27,4 +27,5 @@ export interface UserDocument extends UserRaw, Document {
 export interface UserModel extends Model<UserDocument> {
   createUser: (this: UserModel, user: Partial<User>) => Promise<UserDocument>;
   createAdmin: (this: UserModel) => Promise<void>;
+  asd: (this: UserModel) => Promise<void>;
 }
