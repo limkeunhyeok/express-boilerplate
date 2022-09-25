@@ -14,10 +14,10 @@ export const getConnection = async (): Promise<Connection> => {
 };
 
 export const initializeDatabase = async (): Promise<void> => {
-  logger.info('Connecting to MongoDB');
+  logger.info('Connecting to MongoDB', dbHost);
 
   // TODO: nodeEnv에 따라서 dbHost 변경
-  await mongoose.connect(`${dbHost}-test`);
+  await mongoose.connect(`${dbHost}`);
 
   // TODO: nodeEnv에 따서 debug 변경
   // mongoose.set('debug', true);
@@ -25,8 +25,6 @@ export const initializeDatabase = async (): Promise<void> => {
   await UserModel.createAdmin();
 
   logger.info('Connection established');
-
-  mongoose.connection.on('error', logger.error).on('disconnected', initializeDatabase);
 };
 
 export const closeDatabase = async (connection: Connection | null): Promise<void> => {
@@ -34,3 +32,5 @@ export const closeDatabase = async (connection: Connection | null): Promise<void
     await connection.close();
   }
 };
+
+mongoose.connection.on('error', logger.error).on('disconnected', initializeDatabase);
