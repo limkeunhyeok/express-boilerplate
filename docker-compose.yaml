@@ -1,0 +1,26 @@
+version: '3.8'
+
+networks:
+  chungdaeking:
+    driver: bridge
+services:
+  database:
+    image: mongo:latest
+    container_name: chungdaeking-mongo
+    volumes:
+      - '~/data:/data/db'
+    ports:
+      - '27017:27017'
+    networks:
+      - chungdaeking
+
+  server:
+    image: chungdaeking/docker-image
+    container_name: chungdaeking-node-server
+    ports:
+      - '4000:4000'
+
+    volumes:
+      - '~/data:/data/db'
+    networks:
+      - chungdaeking
