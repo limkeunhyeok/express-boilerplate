@@ -14,7 +14,8 @@ export const getConnection = async (): Promise<Connection> => {
 };
 
 export const initializeDatabase = async (): Promise<void> => {
-  logger.info(`Connecting to MongoDB ${dbHost}`);
+  // logger.info(`Connecting to MongoDB ${dbHost}`);
+  console.log(`Connecting to MongoDB ${dbHost}`);
 
   // TODO: nodeEnv에 따라서 dbHost 변경
   await mongoose.connect(`${dbHost}`);
@@ -24,7 +25,8 @@ export const initializeDatabase = async (): Promise<void> => {
 
   await UserModel.createAdmin();
 
-  logger.info('Connection established');
+  console.log('Connection established');
+  // logger.info('Connection established');
 };
 
 export const closeDatabase = async (connection: Connection | null): Promise<void> => {
