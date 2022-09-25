@@ -23,4 +23,4 @@ jobs:
         with:
           target: TEST
           push: true
-          tags: lkh/docker-image:latest
+          tags: chungdaeking/docker-image:latest
