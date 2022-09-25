@@ -35,4 +35,8 @@ export const closeDatabase = async (connection: Connection | null): Promise<void
   }
 };
 
-mongoose.connection.on('error', logger.error).on('disconnected', initializeDatabase);
+mongoose.connection
+  .on('error', (stream) => {
+    logger.error(stream);
+  })
+  .on('disconnected', initializeDatabase);
