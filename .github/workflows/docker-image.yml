@@ -22,5 +22,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           target: TEST
+          platforms: linux/amd64
           push: true
           tags: chungdaeking/docker-image:latest
