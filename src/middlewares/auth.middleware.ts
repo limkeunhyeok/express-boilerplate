@@ -3,6 +3,7 @@ import { RoleEnum } from '@/common/enums';
 import { ForbiddenException, UnauthorizedException } from '@/common/exceptions';
 import { verifyToken } from '@/lib/jwt';
 import { RequestHandler } from 'express';
+import { getDataFromRequest } from './validation.middleware';
 
 export const authMiddleware: RequestHandler = (req, res, next) => {
   const bearerToken: string = req.headers.authorization;
@@ -34,3 +35,17 @@ export const authorize =
     }
     return next();
   };
+
+export const identityVerification = (req, res, next) => {
+  const { userId, type } = res.locals.user;
+  const params = getDataFromRequest(req);
+
+  if (type === RoleEnum.ADMIN) {
+    return next();
+  }
+
+  if (params.userId || userId !== params.userId) {
+    return next(new ForbiddenException(ACCESS_IS_DENIED));
+  }
+  return next();
+};

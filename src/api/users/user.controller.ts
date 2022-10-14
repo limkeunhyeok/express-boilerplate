@@ -1,7 +1,7 @@
 import { RoleEnum } from '@/common/enums';
 import { Controller } from '@/common/interfaces';
 import { ResponseHandler } from '@/lib/response-handler';
-import { authorize } from '@/middlewares/auth.middleware';
+import { authorize, identityVerification } from '@/middlewares/auth.middleware';
 import {
   getDataFromRequest,
   validationMiddleware,
@@ -34,24 +34,28 @@ export default class UserController implements Controller {
         '/:userId',
         authorize([RoleEnum.ADMIN, RoleEnum.MEMBER]),
         validationMiddleware(UserIdDto, ['params']),
+        identityVerification,
         ResponseHandler(this.findOneByUserId)
       )
       .put(
         '/:userId',
         authorize([RoleEnum.ADMIN, RoleEnum.MEMBER]),
         validationMiddleware(UpdateUserInfoDto, ['params', 'body']),
+        identityVerification,
         ResponseHandler(this.updateInfoByUserId)
       )
       .put(
         '/:userId/password',
         authorize([RoleEnum.ADMIN, RoleEnum.MEMBER]),
         validationMiddleware(UpdateUserPasswordDto, ['params', 'body']),
+        identityVerification,
         ResponseHandler(this.updatePasswordByUserId)
       )
       .delete(
         '/:userId',
         authorize([RoleEnum.ADMIN]),
         validationMiddleware(UserIdDto, ['params']),
+        identityVerification,
         ResponseHandler(this.deleteOneByUserId)
       );
 

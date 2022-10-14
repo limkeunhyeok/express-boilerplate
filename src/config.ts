@@ -6,4 +6,4 @@ export const dbHost =
   process.env.DB_URL || 'mongodb://chungdaeking-mongo:27017/boilerplate';
 export const jwtSecret = process.env.JWT_SECRET || 'keyboardCat';
 export const nodeEnv = process.env.NODE_ENV || 'development';
-export const saltRound = process.env.SALT_ROUND || 10;
+export const saltRound = Number(process.env.SALT_ROUND) || 10;
