@@ -15,12 +15,13 @@ import { RoleEnum } from '@/common/enums';
 import { UserResponse } from '../users/response/user.response';
 import { User } from '../users/entities/user.entity';
 import { TokenResponse } from './response/token.reponse';
+import { UserRepository } from '../users/user.repository';
 
 export default class AuthController implements Controller {
   path = '/auth';
   router = Router();
 
-  authService = new AuthService(UserModel);
+  authService = new AuthService(new UserRepository(UserModel));
 
   constructor() {
     this.initializeRoutes();

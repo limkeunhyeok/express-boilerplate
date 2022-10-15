@@ -3,27 +3,28 @@ import {
   NONE_EXISTS_USER,
 } from '@/common/constants/bad-request.const';
 import { BadRequestException } from '@/common/exceptions';
-import { IUserModel, User as UserJson, UserDocument } from '@/models/user';
+import { UserDocument } from '@/models/user';
 import { UpdateUserInfoDto } from './dtos/update-user-info.dto';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 import { UserIdDto } from './dtos/user-id.dto';
 import { User } from './entities/user.entity';
+import { UserRepository } from './user.repository';
 
 export class UserService {
-  constructor(private readonly userModel: IUserModel) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async deleteOneByUserId({ userId }: UserIdDto): Promise<User> {
-    const hasUser: UserJson = await this.userModel.findById(userId).lean();
+    const hasUser: UserDocument = await this.userRepository.findOneById(userId);
     if (!hasUser) {
       throw new BadRequestException(NONE_EXISTS_USER);
     }
 
-    const deletedUser: UserJson = await this.userModel.findByIdAndDelete(userId).lean();
+    const deletedUser: UserDocument = await this.userRepository.deleteOne(userId);
     return User.fromJson(deletedUser);
   }
 
   async findOneByUserId({ userId }: UserIdDto): Promise<User> {
-    const hasUser: UserJson = await this.userModel.findById(userId).lean();
+    const hasUser: UserDocument = await this.userRepository.findOneById(userId);
     if (!hasUser) {
       throw new BadRequestException(NONE_EXISTS_USER);
     }
@@ -36,12 +37,12 @@ export class UserService {
     nickname,
     type,
   }: UpdateUserInfoDto): Promise<User> {
-    const hasUser: UserJson = await this.userModel.findById(userId).lean();
+    const hasUser: UserDocument = await this.userRepository.findOneById(userId);
     if (!hasUser) {
       throw new BadRequestException(NONE_EXISTS_USER);
     }
 
-    const updatedUser: UserJson = await this.userModel.findByIdAndUpdate(userId, {
+    const updatedUser: UserDocument = await this.userRepository.updateOne(userId, {
       username,
       nickname,
       type,
@@ -50,7 +51,7 @@ export class UserService {
   }
 
   async findAll(): Promise<User[]> {
-    const users: UserJson[] = await this.userModel.find({}).lean();
+    const users: UserDocument[] = await this.userRepository.findAll();
 
     return users.map((user) => {
       return User.fromJson(user);
@@ -62,7 +63,7 @@ export class UserService {
     oldPassword,
     newPassword,
   }: UpdateUserPasswordDto): Promise<string> {
-    const hasUser: UserDocument = await this.userModel.findById(userId);
+    const hasUser: UserDocument = await this.userRepository.findOneById(userId);
     if (!hasUser) {
       throw new BadRequestException(NONE_EXISTS_USER);
     }

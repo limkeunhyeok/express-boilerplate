@@ -1,6 +1,6 @@
 import { ISODatetime, MongoId } from '@/@types/datatype';
 import { RoleEnum } from '@/common/enums';
-import { User as UserJson, UserInfo } from '@/models/user';
+import { UserDocument, UserInfo } from '@/models/user';
 
 export class User {
   constructor(
@@ -14,7 +14,7 @@ export class User {
     public readonly updatedAt: ISODatetime
   ) {}
 
-  public static fromJson(json: UserJson) {
+  public static fromJson(json: UserDocument) {
     if (!json) return null;
     return new User(
       json._id,

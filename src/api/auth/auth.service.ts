@@ -1,19 +1,20 @@
 import { EXISTS_USER, FAILED_SIGN_IN } from '@/common/constants/bad-request.const';
 import { BadRequestException } from '@/common/exceptions';
 import { createToken, verifyToken } from '@/lib/jwt';
-import { IUserModel, User as UserJson } from '@/models/user';
+import { UserDocument } from '@/models/user';
 import { UserIdDto } from '../users/dtos/user-id.dto';
 import { User } from '../users/entities/user.entity';
+import { UserRepository } from '../users/user.repository';
 import { RefreshTokenDto } from './dtos/refresh-token.dto';
 import { SignInDto } from './dtos/sign-in.dto';
 import { SignUpDto } from './dtos/sign-up.dto';
 import { TokenResponse } from './response/token.reponse';
 
 export class AuthService {
-  constructor(private readonly userModel: IUserModel) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async authentication({ userId }: UserIdDto): Promise<User> {
-    const user: UserJson = await this.userModel.findById(userId).lean();
+    const user: UserDocument = await this.userRepository.findOneById(userId);
     return User.fromJson(user);
   }
 
@@ -28,7 +29,7 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignInDto): Promise<TokenResponse> {
-    const hasUser = await this.userModel.findOne({ email });
+    const hasUser = await this.userRepository.findOneByFilter({ email });
     if (!hasUser) {
       throw new BadRequestException(FAILED_SIGN_IN);
     }
@@ -52,12 +53,12 @@ export class AuthService {
     nickname,
     type,
   }: SignUpDto): Promise<TokenResponse> {
-    const hasUser = await this.userModel.findOne({ email });
+    const hasUser = await this.userRepository.findOneByFilter({ email });
     if (hasUser) {
       throw new BadRequestException(EXISTS_USER);
     }
 
-    const createdUser = await this.userModel.createUser({
+    const createdUser = await this.userRepository.create({
       email,
       password,
       username,

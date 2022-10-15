@@ -20,6 +20,11 @@ export class UserRepository implements Repository<UserDocument> {
     return users;
   };
 
+  findOneByFilter = async (filter: FilterQuery<UserDocument>): Promise<UserDocument> => {
+    const users = await this.model.findOne(filter);
+    return users;
+  };
+
   findOneById = async (id: string): Promise<UserDocument | null> => {
     const user = await this.model.findById(id);
     return user;

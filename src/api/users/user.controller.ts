@@ -13,13 +13,14 @@ import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 import { UserIdDto } from './dtos/user-id.dto';
 import { User } from './entities/user.entity';
 import { UserResponse } from './response/user.response';
+import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 
 export default class UserController implements Controller {
   path = '/users';
   router = Router();
 
-  userService = new UserService(UserModel);
+  userService = new UserService(new UserRepository(UserModel));
 
   constructor() {
     this.initializeRoutes();
