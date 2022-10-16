@@ -5,7 +5,6 @@ import {
   validationMiddleware,
 } from '@/middlewares/validation.middleware';
 import { authorize } from '@/middlewares/auth.middleware';
-import { UserModel } from '@/models/user';
 import { RequestHandler, Router } from 'express';
 import { AuthService } from './auth.service';
 import { RefreshTokenDto } from './dtos/refresh-token.dto';
@@ -21,7 +20,7 @@ export default class AuthController implements Controller {
   path = '/auth';
   router = Router();
 
-  authService = new AuthService(new UserRepository(UserModel));
+  authService = new AuthService(new UserRepository());
 
   constructor() {
     this.initializeRoutes();

@@ -1,11 +1,12 @@
-import { Document, FilterQuery, Model } from 'mongoose';
+import { MongoId } from '@/@types/datatype';
+import { FilterQuery } from 'mongoose';
 
-export interface Repository<T extends Document> {
-  model: Model<T>;
+export interface Repository<T> {
   create: (data: unknown) => Promise<T>;
   findAll: () => Promise<T[]>;
-  findByFilter: (filter: FilterQuery<T>) => Promise<T[]>;
-  findOneById: (id: string) => Promise<T | null>;
-  updateOne: (id: string, data: unknown) => Promise<T | null>;
-  deleteOne: (id: string) => Promise<T | null>;
+  findByFilter: (filterQuery: FilterQuery<T>) => Promise<T[]>;
+  findOneByFilter: (filterQuery: FilterQuery<T>) => Promise<T>;
+  findOneById: (id: MongoId) => Promise<T>;
+  updateOne: (id: MongoId, data: unknown) => Promise<T>;
+  deleteOne: (id: MongoId) => Promise<T>;
 }

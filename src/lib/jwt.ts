@@ -1,4 +1,4 @@
-import { TokenPayload } from '@/common/interfaces/token.interface';
+import { TokenPayload } from '@/common/interfaces';
 import { jwtSecret } from '@/config';
 import * as jwt from 'jsonwebtoken';
 

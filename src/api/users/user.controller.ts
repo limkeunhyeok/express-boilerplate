@@ -6,7 +6,6 @@ import {
   getDataFromRequest,
   validationMiddleware,
 } from '@/middlewares/validation.middleware';
-import { UserModel } from '@/models/user';
 import { RequestHandler, Router } from 'express';
 import { UpdateUserInfoDto } from './dtos/update-user-info.dto';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
@@ -20,7 +19,7 @@ export default class UserController implements Controller {
   path = '/users';
   router = Router();
 
-  userService = new UserService(new UserRepository(UserModel));
+  userService = new UserService(new UserRepository());
 
   constructor() {
     this.initializeRoutes();

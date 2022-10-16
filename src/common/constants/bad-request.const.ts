@@ -22,3 +22,8 @@ export const INCORRECT_PASSWORD = {
   code: 4004,
   message: 'Password is incorrect.',
 };
+
+export const NONE_EXISTS_ENTITY = {
+  code: 4005,
+  message: 'None exists entity.',
+};
